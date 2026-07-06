@@ -1,0 +1,20 @@
+# Documentation Index
+
+This directory contains comprehensive documentation for the LangChain RAG project.
+Start with `01_system_architecture.md` if you are new to the project.
+
+| File | What it covers |
+|---|---|
+| `01_system_architecture.md` | High-level system design, component diagram, data flow, and the two main phases (ingestion vs query) |
+| `02_config_explained.md` | Every parameter in `config.py` explained line by line, including how they interact |
+| `03_ingest_explained.md` | Every function in `ingest.py` explained line by line, with a full ingestion flow diagram |
+| `04_app_explained.md` | Every function and section in `app.py` explained line by line, including Streamlit's re-run model |
+| `05_operational_mechanics.md` | End-to-end walkthrough of every user action: startup, upload, select, question, follow-up, delete, restart |
+
+## Recommended reading order for newcomers
+
+1. `01_system_architecture.md` — understand the big picture before any code
+2. `02_config_explained.md` — understand all tunable parameters
+3. `03_ingest_explained.md` — understand how PDFs become a searchable index
+4. `04_app_explained.md` — understand the UI and RAG chain construction
+5. `05_operational_mechanics.md` — see everything working together end-to-end
