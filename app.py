@@ -3,8 +3,6 @@ import os
 import tempfile
 from pathlib import Path
 
-from annotated_types import doc
-
 import streamlit as st
 from langchain_classic.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
@@ -176,12 +174,9 @@ def generate_answer(question: str, chain, container) -> None:
 
     answer_text = response["answer"]
     sources = [
-    {
-        "page_content": doc.page_content,
-        "metadata": doc.metadata,
-    }
-    for doc in response.get("context", [])
-]
+        {"page_content": d.page_content, "metadata": d.metadata}
+        for d in response.get("context", [])
+    ]
 
     st.session_state.conversation.append(
         {"question": question, "answer": answer_text, "sources": sources}
