@@ -3,6 +3,8 @@ import os
 import tempfile
 from pathlib import Path
 
+from annotated_types import doc
+
 import streamlit as st
 from langchain_classic.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
@@ -173,7 +175,13 @@ def generate_answer(question: str, chain, container) -> None:
         return
 
     answer_text = response["answer"]
-    sources = response.get("context", [])
+    sources = [
+    {
+        "page_content": doc.page_content,
+        "metadata": doc.metadata,
+    }
+    for doc in response.get("context", [])
+]
 
     st.session_state.conversation.append(
         {"question": question, "answer": answer_text, "sources": sources}
@@ -198,15 +206,15 @@ def display_conversation() -> None:
                 with st.expander(f"Sources ({len(sources)} chunk(s))"):
                     seen = set()
                     for doc in sources:
-                        page = doc.metadata.get("page")
-                        name = Path(doc.metadata.get("source", "unknown")).name
+                        page = doc["metadata"].get("page")
+                        name = Path(doc["metadata"].get("source", "unknown")).name
                         key = (name, page)
                         if key in seen:
                             continue
                         seen.add(key)
                         st.markdown(f"**{name} — page {page}**")
-                        snippet = doc.page_content[:300]
-                        if len(doc.page_content) > 300:
+                        snippet = doc["page_content"][:300]
+                        if len(doc["page_content"]) > 300:
                             snippet += "…"
                         st.caption(snippet)
 
